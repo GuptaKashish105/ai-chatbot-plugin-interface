@@ -4,10 +4,6 @@ An interactive and intelligent chatbot interface built using **React** and **Typ
 
 ---
 
-## 🌐 Live Demo
-
-🔗 **Try it here**:
-
 ### 📸 Screenshots
 
 Here are some UI walkthroughs of the chatbot:
