@@ -14,27 +14,27 @@ Here are some UI walkthroughs of the chatbot:
 
 #### 1. Command Suggestions on Typing `/`
 
-![Command Suggestions](src/images/img1.png)
+![Command Suggestions](images/img1.png)
 
 #### 2. Placeholder for `/weather`
 
-![Weather Placeholder](src/images/img2.png)
+![Weather Placeholder](images/img2.png)
 
 #### 3. Placeholder for `/define`
 
-![Define Placeholder](src/images/img3.png)
+![Define Placeholder](images/img3.png)
 
 #### 4. Placeholder for `/calc`
 
-![Calc Placeholder](src/images/img4.png)
+![Calc Placeholder](images/img4.png)
 
 #### 5. Error for Incomplete Command
 
-![Incomplete Command Error](src/images/img5.png)
+![Incomplete Command Error](images/img5.png)
 
 #### 6. Final Message Sent
 
-![Final Message Sent](src/images/img6.png)
+![Final Message Sent](images/img6.png)
 
 ## ✨ Features
 
