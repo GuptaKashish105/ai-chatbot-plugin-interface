@@ -1,5 +1,4 @@
 {
-  "rootDirectory": "ai-chatbot",
   "buildCommand": "npm run build",
   "outputDirectory": "dist"
 }
