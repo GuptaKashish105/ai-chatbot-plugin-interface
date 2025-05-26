@@ -6,7 +6,7 @@ An interactive and intelligent chatbot interface built using **React** and **Typ
 
 ## 🌐 Live Demo
 
-🔗 **Try it here**:
+🔗 **Try it here**: https://ai-chatbot-plugin-interface-ta7z.vercel.app/
 
 ## ✨ Features
 
