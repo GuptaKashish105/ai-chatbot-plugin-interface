@@ -5,6 +5,7 @@ type Props = {
 };
 
 const Chat = ({ messages }: Props) => {
+  console.log("messages", messages);
   return (
     <div className="space-y-2 flex flex-col min-h-[300px] justify-end relative">
       {messages?.length === 0 ? (
