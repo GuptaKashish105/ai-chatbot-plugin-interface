@@ -1,26 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import Fuse from "fuse.js";
+import { PLUGIN_REGISTRY } from "../types/pluginRegistry";
 
-const commandSuggestions = [
-  {
-    command: "/weather",
-    description: "Get weather for a city",
-    placeholder: "/weather [Enter your City here]",
-  },
-  {
-    command: "/calc",
-    description: "Evaluate a math expression",
-    placeholder: "/calc [Enter your Expression here]",
-  },
-  {
-    command: "/define",
-    description: "Get a definition of a word",
-    placeholder: "/define [Enter your Term here]",
-  },
-];
+type CommandSuggestion = {
+  command: string;
+  description: string;
+  placeholder: string;
+};
+
+// Convert plugin registry to command suggestions
+const commandSuggestions: CommandSuggestion[] = PLUGIN_REGISTRY.map((p) => ({
+  command: p.command.split("|")[0].trim(), // Get first command if there are multiple
+  description: p.description,
+  placeholder: p.usage,
+}));
 
 const fuse = new Fuse(commandSuggestions, {
-  keys: ["command"],
+  keys: ["command", "description"],
   threshold: 0.4,
 });
 
@@ -31,10 +27,10 @@ type Props = {
 const ChatInput = ({ onSend }: Props) => {
   const [input, setInput] = useState("");
   const [dynamicPlaceholder, setDynamicPlaceholder] = useState(
-    "Try typing: Hi or / "
+    "Try typing: /help or /",
   );
   const [filteredSuggestions, setFilteredSuggestions] =
-    useState(commandSuggestions);
+    useState<CommandSuggestion[]>(commandSuggestions);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [error, setError] = useState("");
@@ -57,7 +53,9 @@ const ChatInput = ({ onSend }: Props) => {
   useEffect(() => {
     if (input?.startsWith("/")) {
       const results = fuse?.search(input);
-      setFilteredSuggestions(results?.map((r) => r?.item));
+      setFilteredSuggestions(
+        results?.length > 0 ? results?.map((r) => r?.item) : commandSuggestions,
+      );
       setShowSuggestions(true);
       setSelectedIndex(0);
     } else {
@@ -70,7 +68,15 @@ const ChatInput = ({ onSend }: Props) => {
     e?.preventDefault();
     if (input?.trim() === "") return;
 
-    if (isIncompleteCommand(input)) {
+    // Allow standalone commands like /quote, /joke, /help
+    const trimmed = input.trim();
+    const isStandaloneCommand =
+      trimmed === "/quote" ||
+      trimmed === "/joke" ||
+      trimmed === "/help" ||
+      (trimmed.startsWith("/dice") && trimmed.split(" ").length <= 2);
+
+    if (isIncompleteCommand(input) && !isStandaloneCommand) {
       setError("Please provide arguments for the command.");
       return;
     }
@@ -78,7 +84,7 @@ const ChatInput = ({ onSend }: Props) => {
     setError("");
     onSend(input);
     setInput("");
-    setDynamicPlaceholder("Try typing: Hi or / ");
+    setDynamicPlaceholder("Try typing: /help or /");
     setShowSuggestions(false);
   };
 
@@ -92,18 +98,16 @@ const ChatInput = ({ onSend }: Props) => {
         setSelectedIndex(
           (prev) =>
             (prev - 1 + filteredSuggestions?.length) %
-            filteredSuggestions?.length
+            filteredSuggestions?.length,
         );
       } else if (e?.key === "Enter") {
         if (filteredSuggestions[selectedIndex]) {
           e?.preventDefault();
           const selectedCmd = filteredSuggestions[selectedIndex];
           setInput(selectedCmd?.command + " ");
-          const placeholder = selectedCmd?.placeholder?.replace(
-            /.*?\[(.*?)\]/,
-            "$1"
+          setDynamicPlaceholder(
+            selectedCmd?.placeholder?.split(/\[|\]/)[1] || "Enter value",
           );
-          setDynamicPlaceholder(placeholder);
           setShowSuggestions(false);
           setError("");
         }
@@ -121,7 +125,7 @@ const ChatInput = ({ onSend }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-1 relative">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 relative">
       <div className="flex gap-2 relative w-full">
         <div className="flex-1 relative">
           {input?.trim() && isIncompleteCommand(input) && (
@@ -150,10 +154,10 @@ const ChatInput = ({ onSend }: Props) => {
           )}
 
           <input
-            className={`w-full border rounded-lg px-3 py-2 text-sm bg-transparent font-mono focus:outline-none focus:ring-2 ${
+            className={`w-full border rounded-lg px-3 py-2 text-sm bg-transparent font-mono focus:outline-none focus:ring-2 transition ${
               error
                 ? "border-red-500 focus:ring-red-500"
-                : "focus:ring-blue-500"
+                : "border-gray-300 focus:ring-blue-500"
             }`}
             type="text"
             value={input}
@@ -173,52 +177,51 @@ const ChatInput = ({ onSend }: Props) => {
         </div>
 
         <button
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm disabled:opacity-50"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 text-sm disabled:opacity-50 disabled:cursor-not-allowed transition"
           type="submit"
-          disabled={input?.trim() === "" || isIncompleteCommand(input)}
-          title={
-            isIncompleteCommand(input)
-              ? "Please complete the command before sending"
-              : "Send message"
-          }
+          disabled={input?.trim() === ""}
+          title={error ? error : "Send message"}
         >
           Send
         </button>
       </div>
 
-      {showSuggestions && (
+      {showSuggestions && filteredSuggestions.length > 0 && (
         <div
-          className="absolute bottom-12 left-0 bg-white border border-gray-300 shadow-md rounded-md w-full z-10"
+          className="absolute bottom-12 left-0 bg-white border border-gray-200 shadow-lg rounded-lg w-full z-10 max-h-64 overflow-y-auto"
           role="listbox"
         >
           {filteredSuggestions?.map((cmd, index) => (
             <div
               key={cmd.command}
-              className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${
-                selectedIndex === index ? "bg-gray-100" : ""
+              className={`px-3 py-2 text-sm cursor-pointer border-b border-gray-100 last:border-b-0 transition ${
+                selectedIndex === index
+                  ? "bg-blue-100 text-blue-900"
+                  : "hover:bg-gray-50"
               }`}
               onMouseDown={() => {
                 setInput(cmd.command + " ");
-                const placeholder = cmd?.placeholder?.replace(
-                  /.*?\[(.*?)\]/,
-                  "$1"
+                setDynamicPlaceholder(
+                  cmd?.placeholder?.split(/\[|\]/)[1] || "Enter value",
                 );
-                setDynamicPlaceholder(placeholder);
                 setShowSuggestions(false);
                 setError("");
               }}
               role="option"
               aria-selected={selectedIndex === index}
             >
-              <span className="font-mono text-blue-600">{cmd?.command}</span> —{" "}
-              {cmd?.description}
+              <span className="font-bold text-blue-600">{cmd?.command}</span> —{" "}
+              <span className="text-gray-700">{cmd?.description}</span>
+              <div className="text-xs text-gray-500 mt-1">
+                Example: {cmd?.placeholder}
+              </div>
             </div>
           ))}
         </div>
       )}
       {error && (
         <p id="input-error" className="text-red-600 text-xs mt-1">
-          {error}
+          ⚠️ {error}
         </p>
       )}
     </form>
