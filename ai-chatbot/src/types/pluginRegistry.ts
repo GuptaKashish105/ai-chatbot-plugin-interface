@@ -47,8 +47,8 @@ export const PLUGIN_REGISTRY: Plugin[] = [
     command: "/translate",
     category: "Utilities",
     icon: "🌍",
-    usage: "/translate to [language] [text]",
-    example: "/translate to spanish hello world",
+    usage: "/translate [language] [text]",
+    example: "/translate hindi how are you",
   },
   {
     id: "converter",

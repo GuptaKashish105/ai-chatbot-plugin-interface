@@ -30,6 +30,17 @@ const CommandSuggestions: React.FC<CommandSuggestionsProps> = ({
             </button>
           ))}
         </div>
+        <div className="mt-3 px-3 py-2 rounded-lg bg-blue-50 border border-blue-100 text-xs text-blue-700">
+          <p className="font-semibold">Translator note:</p>
+          <p>
+            Use <code className="bg-white px-1 rounded">/translate [language] [text]</code> or{' '}
+            <code className="bg-white px-1 rounded">/translate to [language] [text]</code>.
+          </p>
+          <p>
+            Supported languages: english, spanish, french, german, italian, portuguese,
+            russian, chinese, japanese, korean, hindi, arabic.
+          </p>
+        </div>
       </div>
     );
   }
@@ -62,6 +73,19 @@ const CommandSuggestions: React.FC<CommandSuggestionsProps> = ({
           </button>
         ))}
       </div>
+      {filtered.some((plugin) => plugin.id === "translator") && (
+        <div className="mt-3 px-3 py-2 rounded-lg bg-blue-50 border border-blue-100 text-xs text-blue-700">
+          <p className="font-semibold">Translator note:</p>
+          <p>
+            Use <code className="bg-white px-1 rounded">/translate [language] [text]</code> or{' '}
+            <code className="bg-white px-1 rounded">/translate to [language] [text]</code>.
+          </p>
+          <p>
+            Supported languages: english, spanish, french, german, italian, portuguese,
+            russian, chinese, japanese, korean, hindi, arabic.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

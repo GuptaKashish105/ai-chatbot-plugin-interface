@@ -1,113 +1,117 @@
-# AI-Powered Chatbot Interface with plugin-style Commands
+# Advanced Plugin-Based Chatbot Interface
 
-An interactive and intelligent chatbot interface built using **React** and **TypeScript**, enhanced with smart slash command suggestions like `/weather`, `/calc`, and `/define`. This UI component mimics modern chat platforms, guiding users with auto-suggestions, intelligent command parsing, and helpful placeholder prompts.
+A modern, production-ready chatbot built with **React 19**, **TypeScript**, **Vite**, and **Tailwind CSS**. This project demonstrates a scalable plugin-driven architecture, real-time command processing, and a clean, resume-ready UI.
 
----
+## ⭐ Project Highlights
 
-## 🌐 Live Demo
+- **Modular plugin system** for extensible command support
+- **Smart command suggestions** with fuzzy search and autocomplete
+- **API-driven features** for weather, translation, dictionary, and more
+- **Responsive UI** with landing page, chat interface, and plugin browser
+- **Production-ready build** validated with `npm run build`
 
-🔗 **Try it here**: https://ai-chatbot-plugin-interface-ta7z.vercel.app/
+## 🚀 Available Plugins
 
----
+| Command                            | Plugin          | Description                                             | Example                             |
+| ---------------------------------- | --------------- | ------------------------------------------------------- | ----------------------------------- |
+| `/weather [city]`                  | Weather         | Real-time weather data via OpenWeather API              | `/weather London`                   |
+| `/calc [expression]`               | Calculator      | Evaluate math expressions using `mathjs`                | `/calc 12 / (2 + 1)`                |
+| `/define [word]`                   | Dictionary      | Fetch word definitions from Dictionary API              | `/define eloquent`                  |
+| `/translate [language] [text]`      | Translator      | Translate text into another language                    | `/translate hindi how are you`      |
+| `/translate to [language] [text]` | Translator      | Alternative translate syntax                            | `/translate to spanish hello world` |
+| `/convert [amount] [from] to [to]` | Unit Converter  | Convert units such as km, miles, kg, lbs, °C, °F, m, ft | `/convert 100 km to miles`          |
+| `/quote`                           | Quote Generator | Returns an inspirational quote                          | `/quote`                            |
+| `/joke`                            | Joke Generator  | Returns a random programming joke                       | `/joke`                             |
+| `/format [json]`                   | JSON Formatter  | Pretty-print JSON                                       | `/format {"name":"John"}`           |
+| `/validate [json]`                 | JSON Validator  | Validate JSON syntax                                    | `/validate {"name":"John"}`         |
+| `/dice [count]d[sides]`            | Dice Roller     | Roll dice with customizable count and sides             | `/dice 2d6`                         |
 
-### 📸 Screenshots
+## 🧭 Key Features
 
-Here are some UI walkthroughs of the chatbot:
+- **Professional landing experience** with plugin showcase
+- **Smart chat input** that supports command entry, suggestions, and validation
+- **Plugin browser** for easy command discovery
+- **Error handling** for incomplete or invalid input
+- **Extensible architecture** to add new plugins quickly
+- **Production build success** with optimized Vite output
 
-#### 1. Command Suggestions on Typing `/`
+## 💻 Setup Instructions
 
-![Command Suggestions](ai-chatbot/src/images/img1.png)
+### Prerequisites
 
-#### 2. Placeholder for `/weather`
+- Node.js 16+ installed
+- npm available
 
-![Weather Placeholder](ai-chatbot/src/images/img2.png)
-
-#### 3. Placeholder for `/define`
-
-![Define Placeholder](ai-chatbot/src/images/img3.png)
-
-#### 4. Placeholder for `/calc`
-
-![Calc Placeholder](ai-chatbot/src/images/img4.png)
-
-#### 5. Error for Incomplete Command
-
-![Incomplete Command Error](ai-chatbot/src/images/img5.png)
-
-#### 6. Final Message Sent
-
-![Final Message Sent](ai-chatbot/src/images/img6.png)
-
-## ✨ Features
-
-- 🔍 **Command Suggestions** using `/`
-- 💬 **Dynamic Placeholder Prompts** (e.g., `Enter your City here`)
-- 🧠 **Fuzzy Matching** using Fuse.js for command suggestions
-- ❌ **Command Validation** to prevent empty commands
-- 🚀 **Clean and Accessible UI** built with TailwindCSS
-- 🎯 Designed for extensibility (you can easily add new commands)
-
----
-
-## 🚦 Available Slash Commands
-
-| Command    | Description                  | Example Input        |
-| ---------- | ---------------------------- | -------------------- |
-| `/weather` | Get weather for a city       | `/weather London`    |
-| `/calc`    | Evaluate a math expression   | `/calc 5 * (3 + 2)`  |
-| `/define`  | Get the definition of a word | `/define innovation` |
-
----
-
-## 🛠️ Getting Started
-
-Follow these steps to set up and run the chatbot locally:
-
-### 1. Clone the Repository
+### Install Dependencies
 
 ```bash
-git clone https://github.com/your-username/chatbot-interface.git
-cd chatbot-interface
+cd ai-chatbot
+npm install
 ```
 
-### 2. Install Dependencies
+### Configure API Keys
 
-npm install
+Duplicate `.env.example` to `.env` and add your OpenWeather API key:
 
-### 3. Run the Development Server
+```bash
+cp .env.example .env
+```
 
+Update `.env`:
+
+```env
+VITE_OPENWEATHER_API_KEY=your_openweather_api_key
+```
+
+### Run Locally
+
+```bash
 npm run dev
+```
 
-## 🛠️🧑‍💻 How to Use the Chatbot
+The app will run at `http://localhost:5173/`.
 
-Follow these steps to interact with the chatbot:
+### Production Build
 
-### Step 1: Start Typing
+```bash
+npm run build
+npm run preview
+```
 
-Begin typing in the chat input box.
+## 📁 Project Structure
 
-Initially, a prompt like Try typing: Hi or / will appear to guide you.
+- `src/App.tsx` — entry point and chat routing
+- `src/components/` — UI components for chat, landing page, and plugin browser
+- `src/plugins/` — command handling logic for each plugin
+- `src/types/pluginRegistry.ts` — plugin metadata and registry
+- `src/index.css` — global and Tailwind utilities
 
-### Step 2: Use Slash "/" Commands
+## 🎯 Usage
 
-Type / to see a list of available commands.
+1. Open the app and start typing in the chat input.
+2. Type `/` to reveal commands and suggestions.
+3. Select a plugin or type a command directly.
+4. Press `Enter` or click **Send** to execute.
 
-Use arrow keys (↑ / ↓) or click to select a command.
+### Example Commands
 
-### Step 3: Follow the Placeholder Guide
+- `/weather london`
+- `/calc 5 * (3 + 2)`
+- `/define innovation`
+- `/translate to french good morning`
+- `/convert 100 km to miles`
+- `/quote`
+- `/joke`
+- `/format {"name":"John"}`
+- `/validate {"name":"John"}`
+- `/dice 3d8`
 
-After selecting a command, a helpful placeholder will appear (e.g., Enter your City here).
+## ✅ Notes
 
-Complete your command input, such as:
+- The chatbot will automatically suggest commands while typing.
+- If a command is incomplete, the input layer will show helpful guidance.
+- The plugin architecture makes it easy to add more features over time.
 
-/weather London
+## 📌 GitHub Repository
 
-/calc 5 \* 4
-
-/define empathy
-
-### Step 4: Submit your input by simply pressing enter or clicking on send button
-
-Press Enter or click Send.
-
-The chatbot will respond accordingly.
+https://github.com/GuptaKashish105/ai-chatbot-plugin-interface

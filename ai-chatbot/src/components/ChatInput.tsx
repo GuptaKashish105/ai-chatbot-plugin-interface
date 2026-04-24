@@ -101,10 +101,15 @@ const ChatInput = ({ onSend }: Props) => {
             filteredSuggestions?.length,
         );
       } else if (e?.key === "Enter") {
-        if (filteredSuggestions[selectedIndex]) {
+        const trimmed = input.trim();
+        const selectedCmd = filteredSuggestions[selectedIndex];
+        const shouldSelectSuggestion =
+          selectedCmd &&
+          (isIncompleteCommand(input) || trimmed === selectedCmd.command);
+
+        if (shouldSelectSuggestion) {
           e?.preventDefault();
-          const selectedCmd = filteredSuggestions[selectedIndex];
-          setInput(selectedCmd?.command + " ");
+          setInput(selectedCmd.command + " ");
           setDynamicPlaceholder(
             selectedCmd?.placeholder?.split(/\[|\]/)[1] || "Enter value",
           );
@@ -217,6 +222,17 @@ const ChatInput = ({ onSend }: Props) => {
               </div>
             </div>
           ))}
+          {filteredSuggestions.some((cmd) => cmd.command === "/translate") && (
+            <div className="px-3 py-3 bg-blue-50 border-t border-blue-100 text-xs text-blue-700">
+              <p className="font-semibold mb-1">Translation usage</p>
+              <p className="mb-1">
+                Type <code className="bg-white px-1 rounded">/translate [language] [text]</code> or <code className="bg-white px-1 rounded">/translate to [language] [text]</code>.
+              </p>
+              <p>
+                Supported: english, spanish, french, german, italian, portuguese, russian, chinese, japanese, korean, hindi, arabic.
+              </p>
+            </div>
+          )}
         </div>
       )}
       {error && (
