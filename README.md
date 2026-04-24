@@ -2,6 +2,14 @@
 
 A modern, production-ready chatbot built with **React 19**, **TypeScript**, **Vite**, and **Tailwind CSS**. This project demonstrates a scalable plugin-driven architecture, real-time command processing, and a clean, resume-ready UI.
 
+---
+
+## 🔗 Live Demo
+
+👉 [https://ai-chatbot-plugin-interface-ta7z.vercel.app/](https://ai-chatbot-plugin-interface-ta7z.vercel.app/)
+
+---
+
 ## ⭐ Project Highlights
 
 - **Modular plugin system** for extensible command support
